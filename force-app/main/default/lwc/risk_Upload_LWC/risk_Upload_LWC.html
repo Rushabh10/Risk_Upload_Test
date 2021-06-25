@@ -1,0 +1,37 @@
+<template>
+    <h3>Enter your column order</h3>
+    <!-- <form id="form_cols">
+        <label for="fname" style="padding-right:10px;">Name</label><input type="number" id="fname" name="fname" style="width:50px;" value="1"><br>
+        <label for="fname" style="padding-right:10px;">Risk Area</label><input type="number" id="friskArea" name="friskArea" style="width:50px;" value="2"><br>
+        <label for="fname" style="padding-right:10px;">Short Description</label><input type="number" id="fshortDescription" name="fshortDescription" style="width:50px;" value="3"><br>
+        <label for="fname" style="padding-right:10px;">Additional Description</label><input type="number" id="faddDescription" name="faddDescription" style="width:50px;" value="4"><br>
+      </form> -->
+    <lightning-file-upload
+            label="Upload Risks with the following column format - Name | Risk Area | Level | Short Description | Additional Description | Add"
+            accept={acceptedFormats}
+            record-id={myRecordId}
+            onuploadfinished={handleUploadFinished}
+            multiple="multiple">
+    </lightning-file-upload>
+    <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open" if:true={isModalOpen}>
+      <div class="slds-modal__container">
+        <header class="slds-modal__header">
+          <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close">
+            <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+              <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+            </svg>
+            <span class="slds-assistive-text">Close</span>
+          </button>
+          <h2>Confirm Risk Insert</h2>
+        </header>
+        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+          <p>Are you sure you want to insert records from '{fileName}'?</p>
+        </div>
+        <footer class="slds-modal__footer">
+          <button class="slds-button slds-button_neutral" onclick={closeModal} title="Cancel">Cancel</button>
+          <button class="slds-button slds-button_brand" onclick={submitDetails} title="OK">Confirm</button>
+        </footer>
+      </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open" if:true={isModalOpen}></div>
+</template>
