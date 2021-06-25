@@ -14,33 +14,37 @@ export default class Risk_Upload_LWC extends LightningElement {
     @track docId;
     @track subject = 'Risk Upload Results';
     @track body = '';
-    @track toSend = 'rmusthyala@salesforce.com'; // remove before sharing
+    @track toSend; // remove before sharing
     userId = Id;
     @track csvAttach;
     @track isModalOpen = false;
     @track fileName;
 
-    // @wire(getUserDetails, {
-    //     recId: '$userId'
-    // })
-    // wiredUser({
-    //     error,
-    //     data
-    // }) {
-    //     if (data) {
-    //         this.user = data;
-    //         console.log(data.Email);
-    //         this.toSend = data.Email;
 
-    //     } else if (error) {
-    //         this.error = error;
-    //     }
-    // }
+    // function to get the email ID of the current user
+    @wire(getUserDetails, {
+        recId: '$userId'
+    })
+    wiredUser({
+        error,
+        data
+    }) {
+        if (data) {
+            this.user = data;
+            console.log(data.Email);
+            this.toSend = data.Email;
 
-    // get acceptedFormats() {
-    //     return ['.csv'];
-    // }
+        } else if (error) {
+            this.error = error;
+        }
+    }
 
+    get acceptedFormats() {
+        return ['.csv'];
+    }
+
+
+    // function to send the email
     sendEmailAfterUpload() {
         //console.log(this.data);
         this.csvAttach = this.data;
@@ -63,6 +67,7 @@ export default class Risk_Upload_LWC extends LightningElement {
             })
     }
 
+    // modal helpers
     openModal() {
         // to open modal set isModalOpen tarck value as true
         this.isModalOpen = true;
@@ -71,6 +76,8 @@ export default class Risk_Upload_LWC extends LightningElement {
         // to close modal set isModalOpen tarck value as false
         this.isModalOpen = false;
     }
+
+    // function to show toast event upon completion
     submitDetails() {
         csvFileRead({contentDocumentId: this.docId})
         .then(result => {
@@ -100,6 +107,7 @@ export default class Risk_Upload_LWC extends LightningElement {
         this.isModalOpen = false;
     }
 
+    // handle upload of the file
     handleUploadFinished(event) {
         // Get the list of uploaded files
         //var inputName = document.getElementById("form_cols");

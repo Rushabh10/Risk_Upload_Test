@@ -1,4 +1,6 @@
 public with sharing class CSVFileRead {
+
+    // apex method to process the csv, create risk records and upadte the database
     @AuraEnabled
     public static String csvFileRead(Id contentDocumentId) {
         System.debug(contentDocumentId);
@@ -212,6 +214,7 @@ public with sharing class CSVFileRead {
         return final_res;
     }
 
+    // apex method to create the csv and send email
     @AuraEnabled(cacheable=true)
     public static void sendEmailToController(String body, String toSend, String subject, String csvAttach){
         try{
@@ -233,6 +236,8 @@ public with sharing class CSVFileRead {
             throw new AuraHandledException(ex.getMessage());
         }
     }
+
+    // apex method to get user details
     @AuraEnabled(cacheable=true)
     public static User getUserDetails(String recId) {
         return  [Select Id , Name ,Email from User where Id =:recId];
