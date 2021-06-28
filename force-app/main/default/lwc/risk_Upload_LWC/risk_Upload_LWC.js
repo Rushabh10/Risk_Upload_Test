@@ -20,6 +20,7 @@ export default class Risk_Upload_LWC extends LightningElement {
     @track isModalOpen = false;
     @track fileName;
 
+    MAX_FILE_SIZE = 2000000; //Max file size 2.0 MB
 
     // function to get the email ID of the current user
     @wire(getUserDetails, {
@@ -113,10 +114,22 @@ export default class Risk_Upload_LWC extends LightningElement {
         //var inputName = document.getElementById("form_cols");
         // console.log(inputName);
         const uploadedFiles = event.detail.files[0];
+        const filesUploaded = event.detail.files;
         console.log(uploadedFiles);
         this.docId = uploadedFiles.documentId;
         this.fileName = uploadedFiles.name;
         console.log(this.docId);
-        this.isModalOpen = true;
+        if(filesUploaded.size > this.MAX_FILE_SIZE) {
+            this.dispatchEvent(
+                new ShowToastEvent({
+                    title: 'Error',
+                    message: 'File size is too large to be parsed',
+                    variant: 'error',
+                }),   
+            )  
+        }
+        else {
+            this.isModalOpen = true;
+        }
     }
 }
