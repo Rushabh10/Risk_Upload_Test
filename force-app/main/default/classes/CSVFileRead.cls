@@ -32,10 +32,23 @@ public with sharing class CSVFileRead {
                                 riskObj.Name = csvRowData[0];
                                 riskObj.Short_Description__c = csvRowData[3];
                                 riskObj.Risk_Area__c = null;
-                                Id recordTypeId= SObjectType.Risk__c.getRecordTypeInfosByDeveloperName().get('category').getRecordTypeId();
+                                Id recordTypeId = SObjectType.Risk__c.getRecordTypeInfosByDeveloperName().get('category').getRecordTypeId();
                                 riskObj.RecordTypeId = recordTypeId;
-                                List<Risk__c> existingRisk = [SELECT Id, Name FROM Risk__c WHERE Name=:csvRowData[0]];
-                                if(existingRisk.size() != 0)
+                                List<Risk__c> existingRisk = [SELECT Id, Name, RecordTypeId FROM Risk__c WHERE Name=:csvRowData[0]];
+                                if(existingRisk.size() != 0 && existingRisk[0].RecordTypeId == recordTypeId) {
+                                    existingRisk[0].Additional_Description__c = csvRowData[4];
+                                    existingRisk[0].Name = csvRowData[0];
+                                    existingRisk[0].Short_Description__c = csvRowData[3];
+                                    existingRisk[0].Risk_Area__c = null;
+                                    existingRisk[0].RecordTypeId = recordTypeId;
+                                    update existingRisk;
+                                    results.add('Success');
+                                    String temp = csvRecordList[i].replace('\n', '');
+                                    temp = temp.replace('\r', '');
+                                    final_res += temp;
+                                    final_res += ',Success\n';
+                                }
+                                else if(existingRisk.size() != 0)
                                 {
                                     String errorMes = 'Error on record ' + String.valueOf(i) + ': Risk with this name already exists';
                                     //results.add(errorMes);
@@ -94,9 +107,32 @@ public with sharing class CSVFileRead {
                                 riskObj.Name = csvRowData[0];
                                 riskObj.Short_Description__c = csvRowData[3];
                                 riskObj.Risk_Area__c = null;
-                                Id recordTypeId= SObjectType.Risk__c.getRecordTypeInfosByDeveloperName().get('leve1').getRecordTypeId();
+                                Id recordTypeId= SObjectType.Risk__c.getRecordTypeInfosByDeveloperName().get('level1').getRecordTypeId();
                                 riskObj.RecordTypeId = recordTypeId;
-                                List<Risk__c> existingRisk = [SELECT Id, Name FROM Risk__c WHERE Name=:csvRowData[0]];
+                                List<Risk__c> existingRisk = [SELECT Id, Name, RecordTypeId FROM Risk__c WHERE Name=:csvRowData[0]];
+                                if(existingRisk.size() != 0 && existingRisk[0].RecordTypeId == recordTypeId) {
+                                    existingRisk[0].Additional_Description__c = csvRowData[4];
+                                    existingRisk[0].Name = csvRowData[0];
+                                    existingRisk[0].Short_Description__c = csvRowData[3];
+                                    existingRisk[0].Risk_Area__c = null;
+                                    existingRisk[0].RecordTypeId = recordTypeId;
+                                    update existingRisk;
+                                    results.add('Success');
+                                    String temp = csvRecordList[i].replace('\n', '');
+                                    temp = temp.replace('\r', '');
+                                    final_res += temp;
+                                    final_res += ',Success\n';
+                                }
+                                else if(existingRisk.size() != 0)
+                                {
+                                    String errorMes = 'Error on record ' + String.valueOf(i) + ': Risk with this name already exists';
+                                    //results.add(errorMes);
+                                    results.add('Error: Record with this name already exists'); 
+                                    String temp = csvRecordList[i].replace('\n', '');
+                                    temp = temp.replace('\r', '');
+                                    final_res += temp;
+                                    final_res += ',Error: Record with this name already exists\n';                              
+                                }
                                 if(existingRisk.size() != 0)
                                 {
                                     String errorMes = 'Error on record ' + String.valueOf(i) + ': Risk with this name already exists';
@@ -158,7 +194,31 @@ public with sharing class CSVFileRead {
                             riskObj.RecordTypeId = recordTypeId;
                             if(csvRowData[1] != '') {
                                 String parentName = csvRowData[1];
-                                List<Risk__c> parentRisk = [SELECT Id, Name FROM Risk__c WHERE Name=:parentName];
+                                List<Risk__c> existingRisk = [SELECT Id, Name, RecordTypeId FROM Risk__c WHERE Name=:csvRowData[0]];
+                                List<Risk__c> parentRisk = [SELECT Id, Name, RecordTypeId FROM Risk__c WHERE Name=:parentName];
+                                if(existingRisk.size() != 0 && existingRisk[0].RecordTypeId == recordTypeId) {
+                                    existingRisk[0].Additional_Description__c = csvRowData[4];
+                                    existingRisk[0].Name = csvRowData[0];
+                                    existingRisk[0].Short_Description__c = csvRowData[3];
+                                    existingRisk[0].Risk_Area__c = null;
+                                    existingRisk[0].RecordTypeId = recordTypeId;
+                                    update existingRisk;
+                                    results.add('Success');
+                                    String temp = csvRecordList[i].replace('\n', '');
+                                    temp = temp.replace('\r', '');
+                                    final_res += temp;
+                                    final_res += ',Success\n';
+                                }
+                                else if(existingRisk.size() != 0)
+                                {
+                                    String errorMes = 'Error on record ' + String.valueOf(i) + ': Risk with this name already exists';
+                                    //results.add(errorMes);
+                                    results.add('Error: Record with this name already exists'); 
+                                    String temp = csvRecordList[i].replace('\n', '');
+                                    temp = temp.replace('\r', '');
+                                    final_res += temp;
+                                    final_res += ',Error: Record with this name already exists\n';                              
+                                }
                                 if(parentRisk.size() == 0) {
                                     String errMes = 'Error on record ' + String.valueOf(i) + ': Risk Area ' + parentName + ' does not exist';
                                     results.add(errMes);
@@ -170,7 +230,7 @@ public with sharing class CSVFileRead {
                                 else {
                                     Id parentId = parentRisk[0].Id;
                                     riskObj.Risk_Area__c = parentId;
-                                    List<Risk__c> existingRisk = [SELECT Id, Name FROM Risk__c WHERE Name=:csvRowData[0]];
+                                    //List<Risk__c> existingRisk = [SELECT Id, Name FROM Risk__c WHERE Name=:csvRowData[0]];
                                     if(existingRisk.size() != 0)
                                     {
                                         String errorMes = 'Error on record ' + String.valueOf(i) + ': Risk with this name already exists';
