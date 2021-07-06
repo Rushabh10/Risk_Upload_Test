@@ -14,7 +14,7 @@ export default class Risk_Upload_LWC extends LightningElement {
     @track docId;
     @track subject = 'Risk Upload Results';
     @track body = '';
-    @track toSend; // remove before sharing
+    @track toSend = 'rmusthyala@salesforce.com'; // remove before sharing
     userId = Id;
     @track csvAttach;
     @track isModalOpen = false;
@@ -23,22 +23,22 @@ export default class Risk_Upload_LWC extends LightningElement {
     MAX_FILE_SIZE = 2000000; //Max file size 2.0 MB
 
     // function to get the email ID of the current user
-    @wire(getUserDetails, {
-        recId: '$userId'
-    })
-    wiredUser({
-        error,
-        data
-    }) {
-        if (data) {
-            this.user = data;
-            console.log(data.Email);
-            this.toSend = data.Email;
+    // @wire(getUserDetails, {
+    //     recId: '$userId'
+    // })
+    // wiredUser({
+    //     error,
+    //     data
+    // }) {
+    //     if (data) {
+    //         this.user = data;
+    //         console.log(data.Email);
+    //         this.toSend = data.Email;
 
-        } else if (error) {
-            this.error = error;
-        }
-    }
+    //     } else if (error) {
+    //         this.error = error;
+    //     }
+    // }
 
     get acceptedFormats() {
         return ['.csv'];

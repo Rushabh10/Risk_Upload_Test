@@ -1,13 +1,6 @@
 <template>
-    <h3>Enter your column order</h3>
-    <!-- <form id="form_cols">
-        <label for="fname" style="padding-right:10px;">Name</label><input type="number" id="fname" name="fname" style="width:50px;" value="1"><br>
-        <label for="fname" style="padding-right:10px;">Risk Area</label><input type="number" id="friskArea" name="friskArea" style="width:50px;" value="2"><br>
-        <label for="fname" style="padding-right:10px;">Short Description</label><input type="number" id="fshortDescription" name="fshortDescription" style="width:50px;" value="3"><br>
-        <label for="fname" style="padding-right:10px;">Additional Description</label><input type="number" id="faddDescription" name="faddDescription" style="width:50px;" value="4"><br>
-      </form> -->
     <lightning-file-upload
-            label="Upload Risks with the following column format - Name | Risk Area | Level | Short Description | Additional Description | Add"
+            label="Upload Risks with the following column format - Name | Risk Area | Level | Short Description | Currency ISO Code | Risk Category Order | Active | Additional Description | Add"
             accept={acceptedFormats}
             record-id={myRecordId}
             onuploadfinished={handleUploadFinished}
